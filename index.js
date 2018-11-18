@@ -18,6 +18,7 @@ function chooseWord(){
 function newGame(){
     remainingGuesses = 6;
     chooseWord();
+    console.log(word);
     wordObj = new Word(word);
     wordObj.makeArr();
     displayedWord = wordObj.wordDisplay();
@@ -53,7 +54,7 @@ function promptGuess(){
                 }
             }
         ]).then(function(answer){
-            wordObj.guess(answer.userGuess);
+            wordObj.guess(answer.userGuess.toLowerCase());
             //saves the new display string to compare it to the previous one
             let newDisplayedWord = wordObj.wordDisplay();
             //checks if there were any changes (if not, you guessed incorrectly)
@@ -95,7 +96,7 @@ function win(){
 }
 
 function lose(){
-    console.log("Sorry, you lose...");
+    console.log("Sorry, you lose...\n The correct answer was: "+ word);
     playAgainQuestion();
 }
 
