@@ -19,6 +19,7 @@ function Word(word){
         };
         return myString;
     };
+    //game functionality that checks if the user's guess is in the word
     this.guess = function(char){
         for(let i = 0; i<this.letterArr.length;i++){
             this.letterArr[i].checkLetter(char);
