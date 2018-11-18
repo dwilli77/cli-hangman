@@ -1,15 +1,11 @@
 let inquirer = require('inquirer');
-
 let Word = require('./word');
 
 const wordChoices = ["washington", "adams", "jefferson", "madison", "monroe", "jackson", "harrison", "tyler", "polk", "taylor", "fillmore", "pierce", "buchanan", "lincoln", "johnson", "grant", "hayes", "garfield", "arthur", "cleveland", "mckinley", "roosevelt", "taft", "wilson", "harding", "coolidge", "hoover", "truman", "eisenhower", "kennedy", "nixon", "ford", "carter", "reagan", "bush", "clinton", "obama", "trump"];
 
 let word = "";
-
 let wordObj = {};
-
 let remainingGuesses = 6;
-
 let displayedWord = "";
 
 function chooseWord(){
@@ -24,44 +20,75 @@ function newGame(){
     wordObj = new Word(word);
     wordObj.makeArr();
     displayedWord = wordObj.wordDisplay();
-    console.log("your word is " + displayedWord);
+    console.log("Your word is: " + displayedWord);
     promptGuess();
 }
 
 function promptGuess(){
-    if (displayedWord.indexOf("_") === -1){
+    if(displayedWord.indexOf("_") === -1){
         win();
-    }
-    if (remainingGuesses === 0){
+    }else if(remainingGuesses === 0){
         lose();
+    }else{
+        inquirer.prompt([
+            {
+                name: "userGuess",
+                message: "Guess a letter:",
+                type: "input",
+                // validate: function(input){
+                //     if (!input){
+                //         return false;
+                //     }else if (input.length > 1){
+                //         return false;
+                //     }else if (typeof parseInt(input) === "number"){
+                //         return false;
+                //     }else{
+                //         return true;
+                //     };
+                // }
+            }
+        ]).then(function(answer){
+            wordObj.guess(answer.userGuess);
+            let newDisplayedWord = wordObj.wordDisplay();
+            checkChanges(newDisplayedWord, displayedWord);
+            console.log("Your word is: " + displayedWord);
+            promptGuess();
+        })
+    };
+}
+
+function checkChanges(newStr, oldStr){
+    let oldDashCount = 0;
+    let newDashCount = 0;
+    for (let i = 0; i < oldStr.length; i++){
+        if (oldStr[i] === "_"){
+            oldDashCount ++;
+        };
+    };
+    for (let j = 0; j < newStr.length; j++){
+        if (newStr[j] === "_"){
+            newDashCount ++;
+        };
+    };
+    if (newDashCount < oldDashCount){
+        displayedWord = newStr;
+    }else{
+        remainingGuesses --;
+        console.log("Incorrect, remaining guesses: "+ remainingGuesses);
     }
-    inquirer.prompt([
-        {
-            name: "userGuess",
-            message: "Guess a letter:",
-            type: "input",
-            // validate: function(input){
-            //     if (!input){
-            //         return false;
-            //     }else if (input.length > 1){
-            //         return false;
-            //     }else if (typeof parseInt(input) === "number"){
-            //         return false;
-            //     }else{
-            //         return true;
-            //     };
-            // }
-        }
-    ]).then(function(answer){
-        wordObj.guess(answer.userGuess);
-        displayedWord = wordObj.wordDisplay();
-        console.log("your word is " + displayedWord);
-        promptGuess();
-    })
 }
 
 function win(){
     console.log('Congratulations, you win!');
+    playAgainQuestion();
+}
+
+function lose(){
+    console.log("Sorry, you lose...");
+    playAgainQuestion();
+}
+
+function playAgainQuestion(){
     inquirer.prompt([
         {
             type: 'confirm',
