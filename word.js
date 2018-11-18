@@ -6,22 +6,25 @@ function Word(word){
     this.letterArr = [];
     //fills the above array
     this.makeArr = function(){
-        for(let i = 0; i < word.length; i++){
+        for(let i = 0; i < this.word.length; i++){
             let letterObj = new Letter(word.charAt(i));
-            letterArr.push(letterObj);
+            this.letterArr.push(letterObj);
         };
     };
     //returns a string representing the word
     this.wordDisplay = function(){
         let myString = "";
-        for(let i = 0; i <letterArr.length;i++){
-            myString += letterArr[i].charDisplay();
+        for(let i = 0; i <this.letterArr.length;i++){
+            myString += this.letterArr[i].charDisplay();
         };
         return myString;
     };
     this.guess = function(char){
-        for(let i = 0; i<letterArr.length;i++){
-            letterArr[i].checkLetter();
+        for(let i = 0; i<this.letterArr.length;i++){
+            this.letterArr[i].checkLetter(char);
         };
     };
 }
+
+
+module.exports = Word;

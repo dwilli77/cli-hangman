@@ -6,9 +6,9 @@ function Letter(letter){
     //returns underlying letter if it has been guessed, and a placeholder if not
     this.charDisplay = function(){
         if(this.guessed){
-            return this.letter;
+            return " " + this.letter+ " ";
         }else{
-            return "_";
+            return " _ ";
         };
     };
     //checks if a given character matches the underlying character and updated boolean if matches
