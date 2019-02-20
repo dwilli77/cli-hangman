@@ -18,7 +18,7 @@ function chooseWord(){
 function newGame(){
     remainingGuesses = 6;
     chooseWord();
-    console.log(word);
+    
     wordObj = new Word(word);
     wordObj.makeArr();
     displayedWord = wordObj.wordDisplay();
